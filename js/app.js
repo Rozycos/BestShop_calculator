@@ -60,11 +60,15 @@ producsInput.addEventListener('mouseup', onPress);
 
 //checkboxes
 
-accountingCheckbox.addEventListener('click', function d(event){  //true or false
+accountingCheckbox.addEventListener('change', function (event){  //true or false
+    if (accountingCheckbox.checked===true){
+        document.querySelector('[data-id="accounting"]').classList.add('open'); //mayby add variable = document.querySelector('[data-id="accounting"]')?
+    } else
+    {document.querySelector('[data-id="accounting"]').classList.remove('open');}
     console.log("accounting box checked: " + accountingCheckbox.checked);
 });
 
-terminalCheckbox.addEventListener('click', function d(event){  //true or false
+terminalCheckbox.addEventListener('click', function (event){  //true or false
     console.log("rental box checked: " + terminalCheckbox.checked);
 });
 
