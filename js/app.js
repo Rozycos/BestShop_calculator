@@ -1,77 +1,145 @@
-//variables
+// variables
+const prices = {
+    product: 0.5,
+    orders: 0.25,
+    package: {basic: 0, professional: 25, premium: 60},
+    accounting: 35,
+    terminal: 5,
+};
 
 const dropDownList = document.querySelector('.select__dropdown').children; //dropdown list changet into array
 const calcSelect = document.querySelector('.calc__select'); //calc-select - for dropdown list
 const listField = document.querySelector('.select__input'); // for dropdown list
-const liElements = document.querySelectorAll('[data-value]'); // propably unnecessary
-
 const producsInput = document.querySelector('#products'); // for inputs
 const ordersInput = document.querySelector('#orders'); // for inputs
-
 const accountingCheckbox = document.querySelector('#accounting'); // for checkbox1
 const terminalCheckbox = document.querySelector('#terminal'); // for checkbox1
 
+//input fields
+const productListItem = document.querySelector('[data-id="products"]'); // for input
+const productItemCalc = productListItem.querySelector('.item__calc'); //for imput
+const productItemPrice = productListItem.querySelector('.item__price');
+
+//Checkboxes
+const terminalListItem = document.querySelector('[data-id="accounting"]'); // for checkbox terminal
+const terminalItemPrice = terminalListItem.querySelector('.item__price');
+
+//Summary
+const totalSummary = document.querySelector('.summary__total');
+const totalPrice = document.querySelector('.total__price');
+
+
+//input function
+let productSum = 0;
+function onPress(event){
+    productSum = producsInput.value * prices.product
+    productListItem.classList.add('open');
+    productItemCalc.innerText = producsInput.value + ' * $'+ prices.product; //zmienna price
+    productItemPrice.innerText = '$' + productSum; //zmienna price
+    //summary(); // wywołanie summary
+    if (producsInput.value.length === 0){
+        productListItem.classList.remove('open');
+    }
+
+};
+
+// function onClick(event){
+//     productListItem.innerText = producsInput.value;
+// };
+
+producsInput.addEventListener('input', onPress);
+
+
 
 //dropdownlist function
+const packageListItem = document.querySelector('[data-id="package"]'); // for dropdown list
+let packageSum = 0;
+
 calcSelect.addEventListener('click', function (event){
     calcSelect.classList.toggle('open');
 
-[...dropDownList].forEach(function(element){
-    element.addEventListener('click', function (event){
-    listField.innerText = element.innerHTML;
+    [...dropDownList].forEach(function(element, index){
+        element.addEventListener('click', function (event){
+        listField.innerText = element.innerHTML;
+        packageListItem.classList.add('open');
+        packageListItem.querySelector('.item__calc').innerText = element.innerHTML;
+        //summary(); //wywołanie sumy summary();
+            //let packageSum = 0
+            if (element.innerHTML === 'Basic'){
+                packageSum = prices.package.basic;
+                packageListItem.querySelector('.item__price').innerText = '$'+ packageSum;//prices.package.basic;
+            }
+            if (element.innerHTML === 'Professional'){
+                packageSum = prices.package.professional;
+                packageListItem.querySelector('.item__price').innerText = '$'+ packageSum;//prices.package.professional;
+            }
+            if (element.innerHTML === 'Premium') {
+                packageSum = prices.package.premium;
+                packageListItem.querySelector('.item__price').innerText = '$' + packageSum;//prices.package.premium;
+            };
+            //return packageSum;
         });
+    
     });
+    
+
 });
 
 
-//input fields
-
-//const test1 = document.querySelector('.test1'); 
-//const dupa = document.querySelector('.dupa'); //class'item__calc'
-const dupaListItem = document.querySelectorAll('.list__item');
-//const productListItem = dupaListItem(0);
-
-console.log(dupaListItem);
-//console.log(inputNumbers+1);
-//console.log(test1);
-//console.log(dupa);
-
-function onPress(event){
-    dupaListItem.classList.add('open');
-    productListItem.innerText = producsInput.value;
-};
-
-function onClick(event){
-    productListItem.innerText = producsInput.value;
-};
-
-producsInput.addEventListener('input', onPress);
-//producsInput.addEventListener('mouseup', onPress);
-
-
-// inputNumbers.addEventListener('keyup', function(event){
-//     dupaListItem.classList.add('open');
-//     dupa.innerText = inputNumbers.value;
-    
-// });
-// inputNumbers.addEventListener('mouseup', function(event){
-    
-//     dupa.innerHTML = inputNumbers.value;
-// });
-
-//dupa.innerText = inputNumbers.value * 0.5;
-
 //checkboxes
-
-accountingCheckbox.addEventListener('change', function (event){  //true or false
+let accountingSum = 0;
+accountingCheckbox.addEventListener('click', function (event){  //true or false
+    
+    let accountingSum = prices.accounting;
     if (accountingCheckbox.checked===true){
-        document.querySelector('[data-id="accounting"]').classList.add('open'); //mayby add variable = document.querySelector('[data-id="accounting"]')?
-    } else
-    {document.querySelector('[data-id="accounting"]').classList.remove('open');}
+        //summary();
+        terminalListItem.classList.add('open');
+        terminalItemPrice.innerText = '$'+accountingSum;
+        accountingSum = prices.accounting;
+        
+    } else {
+        terminalListItem.classList.remove('open');
+        terminalItemPrice.innerText = 0;
+        accountingSum = 0;
+        //totalSummary.classList.remove('open');
+    };
+    //accountingSum;
     console.log("accounting box checked: " + accountingCheckbox.checked);
 });
 
 terminalCheckbox.addEventListener('click', function (event){  //true or false
-    console.log("rental box checked: " + terminalCheckbox.checked); // tylko do sprawdzenia w konsoli
+    console.log("rental box checked: " + terminalCheckbox.checked);
 });
 
+//console.log(terminalListItem.item__price);
+
+// Summary
+
+const calcSumary = document.querySelector(".item__price");
+
+// calcSumary.addEventListener('change', function(event){
+//     totalSummary.classList.add('open');
+//     let sum = productSum + packageSum + accountingSum;
+//     totalPrice.innerText = '$' + sum;
+//     if (sum === 0){
+//         totalSummary.classList.remove('open')};
+// });
+function summary(){
+    totalSummary.classList.add('open');
+    let sum = productSum + packageSum //+ accountingSum;//dodać pozostałe wyniki
+    
+    totalPrice.innerText = '$' + sum;
+    // if (sum === 0){
+    //     totalSummary.classList.remove('open');
+    // } else {totalSummary.classList.add('open');};
+    //console.log(summary());
+};
+
+function summmm(){
+    productSum + packageSum //+ accountingSum;//dodać pozostałe wyniki
+    
+    console.log(productSum + packageSum);
+};
+
+
+console.log(productSum + packageSum);
